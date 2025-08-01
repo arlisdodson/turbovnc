@@ -478,14 +478,33 @@ class DesktopWindow extends JPanel implements Runnable, MouseListener,
     }
     if (Utils.isWindows() && displayScalingFactor != 1.0)
       g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, scalingAlg);
+
+    // BEGIN ABD
+    double rotationAngle = Math.toRadians(90);
+    //   END ABD
+
     if (cc.cp.width != scaledWidth || cc.cp.height != scaledHeight) {
+// BEGIN ABD
+      int centerX = scaledWidth / 2;
+      int centerY = scaledHeight / 2;
+      g2.rotate(rotationAngle, centerX, centerY);
+//   END ABD
       g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, scalingAlg);
       g2.drawImage(im.getImage(), 0, 0, scaledWidth, scaledHeight, null);
     } else {
       Rectangle r = g.getClipBounds();
+// BEGIN ABD
+      int centerX = r.width / 2;
+      int centerY = r.height / 2;
+//   END ABD
       g2.drawImage(im.getImage(), r.x, r.y, r.x + r.width, r.y + r.height,
                    r.x, r.y, r.x + r.width, r.y + r.height, null);
     }
+
+// BEGIN ABD
+    repaint(0, 0, 800, 1280);
+//   END ABD
+
     g2.dispose();
     if (!swingDB)
       RepaintManager.currentManager(this).setDoubleBufferingEnabled(true);
