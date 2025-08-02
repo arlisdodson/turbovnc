@@ -34,7 +34,7 @@ public final class Toolbar extends JToolBar implements ActionListener {
   static final String[] BUTTONS = {
     "Connection options...", "Connection info...", "Full screen",
     "Request screen refresh", "Request lossless refresh",
-    "Save remote desktop image", "Send Ctrl-Alt-Del", "Send Ctrl-Esc",
+    "Save touchscreen image", "Send Ctrl-Alt-Del", "Send Ctrl-Esc",
     "Send Ctrl key press/release", "Send Alt key press/release",
     "New Connection...", "Disconnect"
   };

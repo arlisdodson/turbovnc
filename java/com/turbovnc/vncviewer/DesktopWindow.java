@@ -48,6 +48,11 @@ import com.turbovnc.rfb.*;
 import com.turbovnc.rfb.Cursor;
 import com.turbovnc.rfb.Point;
 
+// BEGIN ABD
+import java.awt.geom.AffineTransform;
+//import java.awk.image.AffineTransformOp;
+//   END ABD
+
 class DesktopWindow extends JPanel implements Runnable, MouseListener,
   MouseMotionListener, MouseWheelListener, KeyListener, InputMethodRequests {
 
@@ -865,17 +870,44 @@ class DesktopWindow extends JPanel implements Runnable, MouseListener,
     BufferedImage rgbImage =
       new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     rgbImage.createGraphics().drawImage(fbImage, 0, 0, width, height, null);
+
+    // BEGIN ABD
+    double rads = Math.toRadians(90);
+    double sin = Math.abs(Math.sin(rads));
+    double cos = Math.abs(Math.cos(rads));
+    int w = rgbImage.getWidth();
+    int h = rgbImage.getHeight();
+    int newWidth = (int) Math.floor(w * cos + h * sin);
+    int newHeight = (int) Math.floor(h * cos + w * sin);
+    BufferedImage rotatedImage =
+      new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2d = rotatedImage.createGraphics(); 
+    AffineTransform transform = new AffineTransform();
+    transform.translate((newWidth - w) / 2, (newHeight - h) / 2);
+    int tmpx = w / 2;
+    int tmpy = h / 2;
+    transform.rotate(rads, tmpx, tmpy);
+    g2d.setTransform(transform);
+    g2d.drawImage(fbImage, 0, 0, width, height, null);
+    //   END ABD
+
     try {
-      if (!ImageIO.write(rgbImage, formatName, file)) {
+      // BEGIN ABD
+//      if (!ImageIO.write(rgbImage, formatName, file)) {
+      if (!ImageIO.write(rotatedImage, formatName, file)) {
+      //   END ABD
         WarningException we = new WarningException(
-          "Could not save remote desktop image:\nImage format not supported");
+          "Could not save touchscreen image:\nImage format not supported");
         cc.viewer.reportException(we);
       }
     } catch (IOException e) {
       WarningException we = new WarningException(
-        "Could not save remote desktop image:\n" + e.toString());
+        "Could not save touchscreen image:\n" + e.toString());
       cc.viewer.reportException(we);
     }
+    // BEGIN ABD
+    g2d.dispose();
+    //   END ABD
   }
 
   /////////////////////////////////////////////////////////////////////////////

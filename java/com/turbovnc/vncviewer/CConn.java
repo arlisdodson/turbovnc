@@ -2041,7 +2041,7 @@ public final class CConn extends CConnection implements UserPasswdGetter,
       new JFileChooser(System.getProperty("user.home") + "/Desktop");
     SimpleDateFormat df =
       new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
-    fc.setDialogTitle("Save Remote Desktop Image");
+    fc.setDialogTitle("Save Touchscreen Image");
     fc.setSelectedFile(new File("TurboVNC_Screenshot_" +
                        df.format(Calendar.getInstance().getTime()) + ".png"));
     int ret = fc.showSaveDialog(null);
